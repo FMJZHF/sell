@@ -76,8 +76,11 @@ public class WechatController {
     }
 
     @GetMapping("/qrUserInfo")
-    public String qrUserInfo(@RequestParam("code") String code,
-                             @RequestParam("state") String returnUrl) {
+    public String qrUserInfo(@RequestParam("code") String code
+//                             ,@RequestParam("state") String returnUrl
+                            ) {
+        //TODO 这是借用的账号，如果不是借用的，直接放开上面的注释
+        String returnUrl ="http://zhf.s1.natapp.cc/sell/seller/login";
         WxMpOAuth2AccessToken wxMpOAuth2AccessToken = new WxMpOAuth2AccessToken();
         try {
             wxMpOAuth2AccessToken = wxOpenService.oauth2getAccessToken(code);

@@ -11,6 +11,12 @@ spring:
     show-sql: true #在控制台中可以看到sql语句
   jackson:
     default-property-inclusion: non_null  # 返回前台数据时 ，去除无用的属性
+  redis:
+    host: 192.168.0.107
+    port: 6379
+    password:
+
+
 logging:
   pattern:
     console: "%d - %msg%n"   #输出日志的格式
@@ -26,7 +32,7 @@ wechat:
   mchId: 1483469312  #商户号
   mchKey: C5245D70627C1F8E9964D494B0735025 #商户密钥
   openAppId: wx6ad144e54af67d87
-  openAppSecret: 83bfb3d785f9242dcd0d7a988a991cb9
+  openAppSecret: 91a2ff6d38a2bbccfb7e9f9079108e2e
  # keyPath: http://app-all.b0.upaiyun.com/01d3059e868cedea3b361b2ad1c05254.p12  #商户证书路径
   keyPath: E:/imooc WeChat order/p12/01d3059e868cedea3b361b2ad1c05254.p12  #商户证书路径
   notifyUrl: http://zhf.s1.natapp.cc/sell/pay/notify  #异步通知URL 外网
@@ -34,7 +40,7 @@ wechat:
 projecturl:
   wechatMpAuthorize: http://zhf.s1.natapp.cc
   wechatOpenAuthorize: http://zhf.s1.natapp.cc
-  sell:
+  sell: http://zhf.s1.natapp.cc
 
 
 
