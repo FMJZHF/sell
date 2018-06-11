@@ -9,28 +9,26 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 /**
- * 微信公众平台的配置
- * 微信授权
- * 获取用户的基本信息
+ * 微信开放平台的配置
  */
 @Component
-public class WechatMpConfig {
+public class WechatOpenConfig {
 
     @Autowired
     private WechatAccountConfig wechatAccountConfig;
 
     @Bean // 将WxMpService作为bean
-    public WxMpService wxMpService() {
-        WxMpService wxMpService = new WxMpServiceImpl();
-        wxMpService.setWxMpConfigStorage(wxMpConfigStorage());
-        return wxMpService;
+    public WxMpService wxOpenService() {
+        WxMpService wxOpenService = new WxMpServiceImpl();
+        wxOpenService.setWxMpConfigStorage(wxOpenConfigStorage());
+        return wxOpenService;
     }
 
     @Bean // 将WxMpConfigStorage作为bean
-    public WxMpConfigStorage wxMpConfigStorage() {
+    public WxMpConfigStorage wxOpenConfigStorage() {
         WxMpInMemoryConfigStorage wxMpInMemoryConfigStorage = new WxMpInMemoryConfigStorage();
-        wxMpInMemoryConfigStorage.setAppId(wechatAccountConfig.getMpAppId());
-        wxMpInMemoryConfigStorage.setSecret(wechatAccountConfig.getMpAppSecret());
+        wxMpInMemoryConfigStorage.setAppId(wechatAccountConfig.getOpenAppId());
+        wxMpInMemoryConfigStorage.setSecret(wechatAccountConfig.getOpenAppSecret());
         return wxMpInMemoryConfigStorage;
     }
 

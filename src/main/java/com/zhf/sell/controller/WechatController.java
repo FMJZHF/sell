@@ -1,5 +1,7 @@
 package com.zhf.sell.controller;
 
+import com.google.common.base.Utf8;
+import com.zhf.sell.config.ProjectUrlConfig;
 import com.zhf.sell.config.WechatMpConfig;
 import com.zhf.sell.enums.ResultEnum;
 import com.zhf.sell.exception.SellException;
@@ -27,11 +29,17 @@ public class WechatController {
     @Autowired
     private WxMpService wxMpService;
 
+    @Autowired
+    private WxMpService wxOpenService;
+
+    @Autowired
+    private ProjectUrlConfig projectUrlConfig;
+
     @GetMapping("/authorize")
     public String authorize(@RequestParam("returnUrl") String returnUrl) {
         //1.配置(在WechatMpConfig 已经完成)
         //2.调用方法
-        String url = "http://zhf.s1.natapp.cc/sell/wechat/userInfo";
+        String url = projectUrlConfig.getWechatMpAuthorize() + "/sell/wechat/userInfo";
         String redirectUrl = wxMpService.oauth2buildAuthorizationUrl(url, WxConsts.OAuth2Scope.SNSAPI_BASE, URLEncoder.encode(returnUrl));
         log.info("【微信网页授权】获取code，redirectUrl={}", redirectUrl);
         return "redirect:" + redirectUrl; // 地址重定向
@@ -39,10 +47,40 @@ public class WechatController {
 
     @GetMapping("/userInfo")
     public String userInfo(@RequestParam("code") String code,
-                         @RequestParam("state") String returnUrl) {
+                           @RequestParam("state") String returnUrl) {
         WxMpOAuth2AccessToken wxMpOAuth2AccessToken = new WxMpOAuth2AccessToken();
         try {
             wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(code);
+        } catch (WxErrorException e) {
+            log.info("【微信网页授权】[]", e);
+            e.printStackTrace();
+            throw new SellException(ResultEnum.WECHAT_MP_ERROR.getCode(), e.getError().getErrorMsg());
+        }
+        String openId = wxMpOAuth2AccessToken.getOpenId();
+        log.info("【微信网页授权】获取openId，openId={}", openId);
+        return "redirect:" + returnUrl + "?openid=" + openId; // 地址重定向
+    }
+
+    //https://open.weixin.qq.com/connect/qrconnect?appid=wx6ad144e54af67d87&redirect_uri=http://sell.springboot.cn/sell/qr/oTgZpwY02TMCNMprUSJ2YFTtm5_w&&scope=snsapi_login
+
+    @GetMapping("/qrAuthorize")
+    public String qrAuthorize(@RequestParam("returnUrl") String returnUrl) {
+        //1.配置(在WechatMpConfig 已经完成)
+        //2.调用方法
+        String url = projectUrlConfig.getWechatOpenAuthorize() + "/sell/wechat/qrUserInfo";
+        String redirectUrl = wxOpenService.buildQrConnectUrl(url,
+                WxConsts.QrConnectScope.SNSAPI_LOGIN,
+                URLEncoder.encode(returnUrl));
+        log.info("【微信网页授权】获取code，redirectUrl={}", redirectUrl);
+        return "redirect:" + redirectUrl; // 地址重定向
+    }
+
+    @GetMapping("/qrUserInfo")
+    public String qrUserInfo(@RequestParam("code") String code,
+                             @RequestParam("state") String returnUrl) {
+        WxMpOAuth2AccessToken wxMpOAuth2AccessToken = new WxMpOAuth2AccessToken();
+        try {
+            wxMpOAuth2AccessToken = wxOpenService.oauth2getAccessToken(code);
         } catch (WxErrorException e) {
             log.info("【微信网页授权】[]", e);
             e.printStackTrace();

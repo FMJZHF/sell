@@ -2,11 +2,11 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
-    password: 123456
-    # password: root
-    #url: jdbc:mysql://127.0.0.1:3306/sell?characterEncoding=utf-8&useSSL=false
-    url: jdbc:mysql://192.168.11.171/sell?characterEncoding=utf-8&useSSL=false
-#    url: jdbc:mysql://192.168.0.106/sell?characterEncoding=utf-8&useSSL=false
+#   password: 123456
+    password: root
+    url: jdbc:mysql://127.0.0.1:3306/sell?characterEncoding=utf-8&useSSL=false
+#   url: jdbc:mysql://192.168.11.171/sell?characterEncoding=utf-8&useSSL=false
+#   url: jdbc:mysql://192.168.0.106/sell?characterEncoding=utf-8&useSSL=false
   jpa:
     show-sql: true #在控制台中可以看到sql语句
   jackson:
@@ -19,16 +19,22 @@ server:
     context-path: /sell   # 配置URL 访问时 url中添加项目名
 
 wechat:
-#  mpAppId: wx8114a0dd206fdb1f
-  mpAppSecret: c967e88492e748a837d9484e1313f564
+#  mpAppId: wx42c592e3cf643e04
+  mpAppSecret: 83bfb3d785f9242dcd0d7a988a991cb9
 
   mpAppId: wxd898fcb01713c658   # 支付信息 往下
   mchId: 1483469312  #商户号
   mchKey: C5245D70627C1F8E9964D494B0735025 #商户密钥
+  openAppId: wx6ad144e54af67d87
+  openAppSecret: 83bfb3d785f9242dcd0d7a988a991cb9
  # keyPath: http://app-all.b0.upaiyun.com/01d3059e868cedea3b361b2ad1c05254.p12  #商户证书路径
   keyPath: E:/imooc WeChat order/p12/01d3059e868cedea3b361b2ad1c05254.p12  #商户证书路径
   notifyUrl: http://zhf.s1.natapp.cc/sell/pay/notify  #异步通知URL 外网
 
+projecturl:
+  wechatMpAuthorize: http://zhf.s1.natapp.cc
+  wechatOpenAuthorize: http://zhf.s1.natapp.cc
+  sell:
 
 
 
