@@ -8,6 +8,8 @@ import com.zhf.sell.dataobject.SellerInfo;
 import com.zhf.sell.enums.ResultEnum;
 import com.zhf.sell.service.SellerService;
 import com.zhf.sell.utils.CookieUtil;
+import com.zhf.sell.utils.JsonUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -28,6 +30,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Controller
 @RequestMapping("/seller")
+@Slf4j
 public class SellerUserController {
 
     @Autowired
@@ -52,13 +55,11 @@ public class SellerUserController {
         }
         //2.设置token至 redis
         String token = UUID.randomUUID().toString();
-        Integer expire = RedisConstant.EXPIRE;
+        Integer expire = RedisConstant.EXPIRE;  //  过期时间
         //redis的key值 ， redis存储额值 value， 过期时间，时间单位（s）
         redisTemplate.opsForValue().set(String.format(RedisConstant.TOKEN_PREFIX, token), openid, expire, TimeUnit.SECONDS);
         //3.设置token至cookie
-        CookieUtil.set(response, CookieConstant.TOKEN, openid, expire);
-
-
+        CookieUtil.set(response, CookieConstant.TOKEN, token, expire);
         return new ModelAndView("redirect:" + projectUrlConfig.getSell() + "/sell/seller/order/list");
     }
 

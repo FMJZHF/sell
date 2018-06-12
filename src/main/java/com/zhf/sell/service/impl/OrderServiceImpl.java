@@ -13,9 +13,7 @@ import com.zhf.sell.enums.ResultEnum;
 import com.zhf.sell.exception.SellException;
 import com.zhf.sell.repository.OrderDetailRepository;
 import com.zhf.sell.repository.OrderMasterRepository;
-import com.zhf.sell.service.OrderService;
-import com.zhf.sell.service.PayService;
-import com.zhf.sell.service.ProductService;
+import com.zhf.sell.service.*;
 import com.zhf.sell.utils.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -49,6 +47,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private PayService payService;
+
+    @Autowired
+    private PushMessageService pushMessageService;
+
+    @Autowired
+    private WebSocket webSocket;
 
 
     @Override
@@ -91,6 +95,10 @@ public class OrderServiceImpl implements OrderService {
                         new CartDTO(e.getProductId(), e.getProductQuantity())
                 ).collect(Collectors.toList());
         productService.decreaseStock(cartDTOList);
+
+        //发送webSocket消息（用户下单后才会触发）
+        webSocket.sendMessage("有新的订单");
+
         return orderDTO;
     }
 
@@ -181,6 +189,10 @@ public class OrderServiceImpl implements OrderService {
             log.error("【完结订单】更新失败，updateResult={}", updateResult);
             throw new SellException(ResultEnum.ORDER_UPDATE_FAIL);
         }
+        //推送微信模板消息
+        //TODO  该处抛了异常， 应该处理 防止事务回滚
+        pushMessageService.orderStatus(orderDTO);
+
         return orderDTO;
     }
 

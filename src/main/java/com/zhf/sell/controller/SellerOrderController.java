@@ -41,7 +41,7 @@ public class SellerOrderController {
                              @RequestParam(value = "size", defaultValue = "10") Integer size,
                              Map<String, Object> map) {
         //TODO  前端数据分页数据多时 中间用...显示
-        PageRequest request = new PageRequest(page - 1, size);
+        PageRequest request =  PageRequest.of(page - 1, size);
         Page<OrderDTO> orderDTOPage = orderService.findList(request);
         map.put("orderDTOPage", orderDTOPage);
         map.put("currentPage", page);

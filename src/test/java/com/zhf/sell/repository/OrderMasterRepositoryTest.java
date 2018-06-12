@@ -45,7 +45,7 @@ public class OrderMasterRepositoryTest {
     @Test
     public void findByBuyerOpenid() {
 
-        PageRequest request = new PageRequest(1,3);
+        PageRequest request = PageRequest.of(1,3);
         Page<OrderMaster> orderMasters = repository.findByBuyerOpenid(OPENID , request);
         log.info("总元素：{}", orderMasters.getTotalElements());
         Assert.assertNotEquals(0, orderMasters.getTotalElements());

@@ -61,7 +61,7 @@ public class WechatController {
         return "redirect:" + returnUrl + "?openid=" + openId; // 地址重定向
     }
 
-    //https://open.weixin.qq.com/connect/qrconnect?appid=wx6ad144e54af67d87&redirect_uri=http://sell.springboot.cn/sell/qr/oTgZpwY02TMCNMprUSJ2YFTtm5_w&&scope=snsapi_login
+    //https://open.weixin.qq.com/connect/qrconnect?appid=wx6ad144e54af67d87&redirect_uri=http://sell.springboot.cn/sell/qr/oTgZpwY02TMCNMprUSJ2YFTtm5_w&scope=snsapi_login
 
     @GetMapping("/qrAuthorize")
     public String qrAuthorize(@RequestParam("returnUrl") String returnUrl) {
