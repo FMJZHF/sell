@@ -12,7 +12,7 @@ spring:
   jackson:
     default-property-inclusion: non_null  # 返回前台数据时 ，去除无用的属性
   redis:
-    host: 192.168.0.107
+    host: 192.168.11.171
     port: 6379
     password:
 

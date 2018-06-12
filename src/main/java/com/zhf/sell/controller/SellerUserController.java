@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.UUID;
@@ -53,16 +54,30 @@ public class SellerUserController {
         String token = UUID.randomUUID().toString();
         Integer expire = RedisConstant.EXPIRE;
         //redis的key值 ， redis存储额值 value， 过期时间，时间单位（s）
-        redisTemplate.opsForValue().set(String.format(RedisConstant.TOKEN_PREFIX,token),openid ,expire ,TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(String.format(RedisConstant.TOKEN_PREFIX, token), openid, expire, TimeUnit.SECONDS);
         //3.设置token至cookie
-        CookieUtil.set(response , CookieConstant.TOKEN,openid , expire);
+        CookieUtil.set(response, CookieConstant.TOKEN, openid, expire);
 
 
-        return new ModelAndView("redirect:"+projectUrlConfig.getSell()+"/sell/seller/order/list");
+        return new ModelAndView("redirect:" + projectUrlConfig.getSell() + "/sell/seller/order/list");
     }
 
     @GetMapping("/logout")
-    public void logout() {
+    public ModelAndView logout(HttpServletRequest request,
+                               HttpServletResponse response,
+                               Map<String, Object> map) {
+        //1.从cookie里面查询
+        Cookie cookie = CookieUtil.get(request, CookieConstant.TOKEN);
+        if (null != cookie) {
+            //2.清楚redis
+            redisTemplate.opsForValue().getOperations().delete(String.format(RedisConstant.TOKEN_PREFIX, cookie.getValue()));
+            //3.清楚cookie
+            CookieUtil.set(response, CookieConstant.TOKEN, null, 0);
+        }
+        map.put("msg", ResultEnum.LOGOUT_SCCESS.getMessage());
+        map.put("url", "/sell/seller/order/list");
+        return new ModelAndView("common/success", map);
+
 
     }
 
