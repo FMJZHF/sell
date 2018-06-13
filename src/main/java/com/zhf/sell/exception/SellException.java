@@ -1,7 +1,9 @@
 package com.zhf.sell.exception;
 
 import com.zhf.sell.enums.ResultEnum;
+import lombok.Data;
 
+@Data
 public class SellException extends RuntimeException {
 
     private Integer code;

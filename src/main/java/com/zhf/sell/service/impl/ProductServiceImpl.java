@@ -4,6 +4,7 @@ import com.zhf.sell.dataobject.ProductInfo;
 import com.zhf.sell.dto.CartDTO;
 import com.zhf.sell.enums.ProductStatusEnum;
 import com.zhf.sell.enums.ResultEnum;
+import com.zhf.sell.exception.ResponseBankException;
 import com.zhf.sell.exception.SellException;
 import com.zhf.sell.repository.ProductInfoRepository;
 import com.zhf.sell.service.ProductService;
@@ -30,6 +31,8 @@ public class ProductServiceImpl implements ProductService {
             return repository.findById(productId).get();
         }catch (Exception e){
             throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+            //假设抛给银行异常 （用于修改状态码）
+//            throw new ResponseBankException();
         }
     }
 

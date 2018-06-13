@@ -124,7 +124,7 @@ websocket.onmessage = function (event) {
     //弹窗提醒，播放音乐
     $('#myModal').modal('show');
     //播放音乐
-    $('#notice')[0].play();
+    //('#notice')[0].play();
 
 }
 websocket.onerror = function () {
