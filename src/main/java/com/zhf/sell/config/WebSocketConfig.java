@@ -10,7 +10,8 @@ import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 @Component
 public class WebSocketConfig {
 
-    @Bean
+    //TODO 测试websocket消息推送是，如果有连接失败，将注释释放
+//    @Bean
     public ServerEndpointExporter serverEndpointExporter(){
         return new ServerEndpointExporter();
     }
