@@ -44,6 +44,8 @@ projecturl:
   wechatMpAuthorize: http://zhf.s1.natapp.cc
   wechatOpenAuthorize: http://zhf.s1.natapp.cc
   sell: http://zhf.s1.natapp.cc
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
 
 
 

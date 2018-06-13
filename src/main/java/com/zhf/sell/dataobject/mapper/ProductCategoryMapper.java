@@ -40,6 +40,11 @@ public interface ProductCategoryMapper {
     @Delete("delete from product_category where category_type = #{categoryType}")
     int deleteByCategoryType(Integer categoryType);
 
+    /**
+     * 使用xml方式  以上是使用mybatis的注解方式
+     * @param categoryType
+     * @return
+     */
     ProductCategory selectByCategoryType(Integer categoryType);
 
 }
